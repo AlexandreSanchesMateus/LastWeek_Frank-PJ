@@ -15,7 +15,7 @@ MonoBehaviour:
   active: 1
   intensity:
     m_OverrideState: 1
-    m_Value: 0.28
+    m_Value: 0.413
   xMultiplier:
     m_OverrideState: 1
     m_Value: 1
@@ -102,7 +102,7 @@ MonoBehaviour:
     m_Value: 7.08
   scatter:
     m_OverrideState: 1
-    m_Value: 0.7
+    m_Value: 0.471
   clamp:
     m_OverrideState: 0
     m_Value: 65472
@@ -158,6 +158,8 @@ MonoBehaviour:
   - {fileID: -699066741338188636}
   - {fileID: -587467938794107961}
   - {fileID: -2273178965491715305}
+  - {fileID: 5332051480209586285}
+  - {fileID: 4380727221202042968}
 --- !u!114 &214135955498631102
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -174,6 +176,34 @@ MonoBehaviour:
   intensity:
     m_OverrideState: 1
     m_Value: 1
+--- !u!114 &4380727221202042968
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66f335fb1ffd8684294ad653bf1c7564, type: 3}
+  m_Name: ColorAdjustments
+  m_EditorClassIdentifier: 
+  active: 1
+  postExposure:
+    m_OverrideState: 1
+    m_Value: -1.7
+  contrast:
+    m_OverrideState: 1
+    m_Value: -35.6
+  colorFilter:
+    m_OverrideState: 1
+    m_Value: {r: 0.8018868, g: 0.49550554, b: 0.49550554, a: 1}
+  hueShift:
+    m_OverrideState: 1
+    m_Value: 0
+  saturation:
+    m_OverrideState: 1
+    m_Value: 100
 --- !u!114 &5003074727633639095
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -207,10 +237,10 @@ MonoBehaviour:
     m_Value: 1.37
   aperture:
     m_OverrideState: 1
-    m_Value: 5.6
+    m_Value: 19.84
   focalLength:
     m_OverrideState: 1
-    m_Value: 46
+    m_Value: 1
   bladeCount:
     m_OverrideState: 1
     m_Value: 5
@@ -220,3 +250,43 @@ MonoBehaviour:
   bladeRotation:
     m_OverrideState: 1
     m_Value: 0
+--- !u!114 &5332051480209586285
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdfbdbb87d3286943a057f7791b43141, type: 3}
+  m_Name: ChannelMixer
+  m_EditorClassIdentifier: 
+  active: 0
+  redOutRedIn:
+    m_OverrideState: 1
+    m_Value: -200
+  redOutGreenIn:
+    m_OverrideState: 1
+    m_Value: -200
+  redOutBlueIn:
+    m_OverrideState: 1
+    m_Value: -200
+  greenOutRedIn:
+    m_OverrideState: 1
+    m_Value: 200
+  greenOutGreenIn:
+    m_OverrideState: 1
+    m_Value: 200
+  greenOutBlueIn:
+    m_OverrideState: 1
+    m_Value: 200
+  blueOutRedIn:
+    m_OverrideState: 1
+    m_Value: 200
+  blueOutGreenIn:
+    m_OverrideState: 1
+    m_Value: 200
+  blueOutBlueIn:
+    m_OverrideState: 1
+    m_Value: 200
