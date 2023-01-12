@@ -1,0 +1,54 @@
+# Blender MTL File: 'None'
+# Material Count: 5
+
+newmtl Eyes
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.374345 0.374345 0.374345
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd Eye_01.png
+
+newmtl Page_01
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.374345 0.374345 0.374345
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd engine_thomas_page1.png
+
+newmtl Page_02
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.374345 0.374345 0.374345
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd engine_thomas_page2.png
+
+newmtl Page_03
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.374345 0.374345 0.374345
+Ni 1.000000
+d 0.000000
+illum 2
+map_Kd Engine_Thomas_Page3.png
+map_d Engine_Thomas_Page3.png
+
+newmtl Shadow
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.374345 0.374345 0.374345
+Ni 1.000000
+d 0.000000
+illum 2
+map_Kd Thomas_Shadow.png
+map_d Thomas_Shadow.png
