@@ -55,6 +55,7 @@ public class DialogueConfig : MonoBehaviour
 
     public SpeekerConfig speekerConfig;
     public TextAsset csvFile;
+    public DialogueTable table;
 
     public float delaiAutoPass;
     public List<SentenceConfig> sentenceConfigs = new List<SentenceConfig>();

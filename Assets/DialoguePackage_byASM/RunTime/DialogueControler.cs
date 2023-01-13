@@ -77,8 +77,6 @@ public class DialogueControler : MonoBehaviour
     {
         speekerCount++;
 
-        Debug.Log(speekerCount + " " + _dialog.sentenceConfigs.Count);
-
         if(speekerCount >= _dialog.sentenceConfigs.Count)
         {
             EndDialogue();

@@ -14,21 +14,25 @@ public class DialogueConfigCustomEditor : Editor
 
     private bool isConfigurationPanelOpen = false;
     private bool initStyle = false;
-    private bool initSpeeker = false;
 
-    private int idDialogue;
+    private string idDialogue;
+
+    private bool initSpeeker = false;
     private List<string> speekerName = new List<string>();
 
     private void OnEnable()
     {
         _source = (DialogueConfig)this.target;
 
+        /*if (_source.csvFile != null)
+            InitializeTable();*/
+
         if (_source.speekerConfig)
             InitializeSpeeker();
         else
         {
             speekerName.Clear();
-            speekerName.Add("Missing config");
+            speekerName.Add("MISSING");
         }
     }
 
@@ -65,15 +69,6 @@ public class DialogueConfigCustomEditor : Editor
             GUILayout.BeginHorizontal();
             GUILayout.Label("SpeekerConfig");
             _source.speekerConfig = (SpeekerConfig)EditorGUILayout.ObjectField(_source.speekerConfig, typeof(SpeekerConfig), true, GUILayout.Width(200));
-
-            if (_source.speekerConfig)
-            {
-                if (!initSpeeker)
-                    InitializeSpeeker();
-            }
-            else
-                initSpeeker = false;
-
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
@@ -97,15 +92,15 @@ public class DialogueConfigCustomEditor : Editor
             GUILayout.BeginHorizontal();
 
             GUILayout.Label("Sentence ID Selected", GUILayout.ExpandWidth(true));
-            idDialogue = EditorGUILayout.IntField(idDialogue, GUILayout.Width(100));
+            idDialogue = EditorGUILayout.TextField(idDialogue, GUILayout.Width(100));
 
-            if (GUILayout.Button(new GUIContent("0", "Look for a specific key "), GUILayout.Width(20f)))
+            if (GUILayout.Button(new GUIContent("0", "Look for a specific key"), GUILayout.Width(20f)))
             {
                 // Ouverture Box
             }
 
             GUILayout.EndHorizontal();
-            GUILayout.TextArea("Ceci est un exemple de texte lier à l'id séléectionné juste au dessus", GUILayout.Height(60));
+            GUILayout.TextArea(GetSentenceFromCSV(idDialogue), GUILayout.Height(60));
 
             GUILayout.EndVertical();
 
@@ -237,9 +232,22 @@ public class DialogueConfigCustomEditor : Editor
             speekerName.Add(other.name);
     }
 
-
-    private string GetSentenceFromCSV(int idSentence)
+    private void InitializeTable()
     {
-        return "AZERTYUIOPQSDFGHJKLMWXCVBN";
+        _source.table.Load(_source.csvFile);
+    }
+
+
+    private string GetSentenceFromCSV(string idSentence)
+    {
+        return "azertyuiopqsdfghjklmwxcvbn";
+
+        /*if(_source.table != null)
+        {
+            DialogueTable.Row row = _source.table.Find_ID(idSentence);
+            return row.FR;
+        }
+
+        return "No CSV File";*/
     }
 }
