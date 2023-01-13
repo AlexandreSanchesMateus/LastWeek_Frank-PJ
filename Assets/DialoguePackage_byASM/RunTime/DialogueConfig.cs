@@ -2,16 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class DialogueConfig : MonoBehaviour
 {
-    public SpeekerConfig speekerConfig;
-
     [System.Serializable]
     public struct SentenceConfig
     {
         public int idSpeeker;
         public bool autoPass;
         public List<Sentence> speach;
+
+        public SentenceConfig(SentenceConfig copy)
+        {
+            idSpeeker = copy.idSpeeker;
+            autoPass = copy.autoPass;
+            speach = copy.speach;
+        }
 
         public SentenceConfig(int _id, bool _autoPass, List<Sentence> _speach)
         {
@@ -45,8 +51,18 @@ public class DialogueConfig : MonoBehaviour
         }
     }
 
+    public static int idLanguage { get; private set; }
+
+    public SpeekerConfig speekerConfig;
+    public TextAsset csvFile;
+
+    public float delaiAutoPass;
     public List<SentenceConfig> sentenceConfigs = new List<SentenceConfig>();
 
+    public void SetLanguage(int value)
+    {
+        idLanguage = value;
+    }
 
     public void StartDialogue()
     {

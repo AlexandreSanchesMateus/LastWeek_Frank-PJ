@@ -64,7 +64,7 @@ public class DialogueConfigCustomEditor : Editor
 
             GUILayout.BeginHorizontal();
             GUILayout.Label("SpeekerConfig");
-            _source.speekerConfig = (SpeekerConfig)EditorGUILayout.ObjectField(_source.speekerConfig, typeof(SpeekerConfig), true, GUILayout.Width(150));
+            _source.speekerConfig = (SpeekerConfig)EditorGUILayout.ObjectField(_source.speekerConfig, typeof(SpeekerConfig), true, GUILayout.Width(200));
 
             if (_source.speekerConfig)
             {
@@ -77,28 +77,38 @@ public class DialogueConfigCustomEditor : Editor
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            GUILayout.Label("CSV Script");
-            _source.speekerConfig = (SpeekerConfig)EditorGUILayout.ObjectField(_source.speekerConfig, typeof(SpeekerConfig), true, GUILayout.Width(150));
+            GUILayout.Label("CSV File");
+            _source.csvFile = (TextAsset)EditorGUILayout.ObjectField(_source.csvFile, typeof(TextAsset), true, GUILayout.Width(200));
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Language Selected");
+            _source.SetLanguage(EditorGUILayout.Popup(DialogueConfig.idLanguage, new string[] { "1", "2" }, GUILayout.Width(200)));
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Delai Auto-Pass");
+            _source.delaiAutoPass = EditorGUILayout.FloatField(_source.delaiAutoPass, GUILayout.Width(200));
             GUILayout.EndHorizontal();
 
             GUILayout.Space(40);
 
+            GUILayout.BeginVertical("window");
             GUILayout.BeginHorizontal();
+
+            GUILayout.Label("Sentence ID Selected", GUILayout.ExpandWidth(true));
             idDialogue = EditorGUILayout.IntField(idDialogue, GUILayout.Width(100));
 
             if (GUILayout.Button(new GUIContent("0", "Look for a specific key "), GUILayout.Width(20f)))
             {
-                    // Ouverture Box
+                // Ouverture Box
             }
 
-            GUILayout.FlexibleSpace();
-
-            if (GUILayout.Button(new GUIContent("Add speeker", "Add a new speeker")))
-                _source.sentenceConfigs.Add(new DialogueConfig.SentenceConfig());
-
             GUILayout.EndHorizontal();
+            GUILayout.TextArea("Ceci est un exemple de texte lier à l'id séléectionné juste au dessus", GUILayout.Height(60));
 
-            GUILayout.Label("Ceci est un exemple de texte lier à l'ID selectionné");
+            GUILayout.EndVertical();
+
             GUILayout.Space(10);
 
 
@@ -117,6 +127,28 @@ public class DialogueConfigCustomEditor : Editor
                 _source.sentenceConfigs[i] = new DialogueConfig.SentenceConfig(idSelected, passSelected, _source.sentenceConfigs[i].speach);
                 GUILayout.FlexibleSpace();
 
+                if (GUILayout.Button(new GUIContent("U", "Move the sentence down"), GUILayout.Width(20f)))
+                {
+                    if (i != 0)
+                    {
+                        DialogueConfig.SentenceConfig copy = new DialogueConfig.SentenceConfig(_source.sentenceConfigs[i]);
+
+                        _source.sentenceConfigs.Remove(_source.sentenceConfigs[i]);
+                        _source.sentenceConfigs.Insert(i - 1, copy);
+                    }
+                }
+
+                if (GUILayout.Button(new GUIContent("D", "Move the sentence up"), GUILayout.Width(20f)))
+                {
+                    if (i != _source.sentenceConfigs.Count - 1)
+                    {
+                        DialogueConfig.SentenceConfig copy = new DialogueConfig.SentenceConfig(_source.sentenceConfigs[i]);
+
+                        _source.sentenceConfigs.Remove(_source.sentenceConfigs[i]);
+                        _source.sentenceConfigs.Insert(i + 1, copy);
+                    }
+                }
+
                 if (GUILayout.Button(new GUIContent("X", "Delete this conversation"), GUILayout.Width(20f)) && EditorUtility.DisplayDialog("Caution", "Your are about to delete the entire section of this dialogue.\nAre you sure ?", "Yes, I am certain"))
                 {
                     _source.sentenceConfigs.Remove(_source.sentenceConfigs[i]);
@@ -126,7 +158,7 @@ public class DialogueConfigCustomEditor : Editor
 
                 GUILayout.EndHorizontal();
 
-                GUILayout.Space(10);
+                GUILayout.Space(20);
 
 
                 GUILayout.BeginVertical("Box");
@@ -148,13 +180,23 @@ public class DialogueConfigCustomEditor : Editor
                     DialogueConfig.SentenceConfig.ANIMATION ToChange = (DialogueConfig.SentenceConfig.ANIMATION)EditorGUILayout.EnumPopup(_source.sentenceConfigs[i].speach[y].animEnter, GUILayout.Width(100f));
                     _source.sentenceConfigs[i].speach[y] = new DialogueConfig.SentenceConfig.Sentence(_source.sentenceConfigs[i].speach[y].sentence, ToChange);
 
-                    if (GUILayout.Button(new GUIContent("D", "Move the sentence down"), GUILayout.Width(20f)))
+                    if (GUILayout.Button(new GUIContent("U", "Move the sentence down"), GUILayout.Width(20f)))
                     {
-                        // UP
+                        if (y != 0)
+                        {
+                            DialogueConfig.SentenceConfig.Sentence copy = _source.sentenceConfigs[i].speach[y];
+                            _source.sentenceConfigs[i].speach.Remove(_source.sentenceConfigs[i].speach[y]);
+                            _source.sentenceConfigs[i].speach.Insert(y - 1, copy);
+                        }
                     }
-                    if (GUILayout.Button(new GUIContent("U", "Move the sentence up"), GUILayout.Width(20f)))
+                    if (GUILayout.Button(new GUIContent("D", "Move the sentence up"), GUILayout.Width(20f)))
                     {
-                        // Down
+                        if (y != _source.sentenceConfigs[i].speach.Count - 1)
+                        {
+                            DialogueConfig.SentenceConfig.Sentence copy = _source.sentenceConfigs[i].speach[y];
+                            _source.sentenceConfigs[i].speach.Remove(_source.sentenceConfigs[i].speach[y]);
+                            _source.sentenceConfigs[i].speach.Insert(y + 1, copy);
+                        }
                     }
 
                     if (GUILayout.Button(new GUIContent("X", "Delete the current sentence"), GUILayout.Width(20f)))
@@ -167,6 +209,11 @@ public class DialogueConfigCustomEditor : Editor
 
                 GUILayout.EndVertical();
             }
+
+            GUILayout.Space(20);
+            if (GUILayout.Button(new GUIContent("Add speeker", "Add a new speeker")))
+                _source.sentenceConfigs.Add(new DialogueConfig.SentenceConfig());
+            GUILayout.Space(40);
         }
         else
         {
