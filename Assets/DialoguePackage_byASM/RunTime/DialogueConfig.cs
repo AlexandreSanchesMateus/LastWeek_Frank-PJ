@@ -39,12 +39,14 @@ public class DialogueConfig : MonoBehaviour
         public struct Sentence
         {
             public DialogueTable.Row sentence;
+            public int csvIndex;
             public ANIMATION animEnter;
 
-            public Sentence(DialogueTable.Row _sentence, ANIMATION _animation)
+            public Sentence(DialogueTable.Row _sentence, ANIMATION _animation, int _csvIndex)
             {
                 sentence = _sentence;
                 animEnter = _animation;
+                csvIndex = _csvIndex;
             }
         }
 

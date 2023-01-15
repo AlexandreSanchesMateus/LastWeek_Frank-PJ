@@ -135,31 +135,42 @@ public class DialogueConfigCustomEditor : Editor
             if (IDInput == "")
                 isInCustomDialogue = true;
             else
+            {
+                SearchForSentence();
                 isInCustomDialogue = false;
+            }
         }
 
         if (isInCustomDialogue)
             customDialogue = GUILayout.TextArea(customDialogue, GUILayout.Height(60));
         else
         {
-            if (SearchForSentence())
+            if (searchResult.Count > 0)
             {
-                scrollPosition = GUILayout.BeginScrollView(scrollPosition, GUILayout.Height(60));
+                scrollPosition = GUILayout.BeginScrollView(scrollPosition, GUILayout.Height(120));
                 for (int k = 0; k < searchResult.Count; k++)
                 {
-                    if (GUILayout.Button(searchResult[k].resultIdCsv + " /  ID : " + searchResult[k].resultRow.ID))
+                    if (GUILayout.Button("[ " + searchResult[k].resultRow.ID + " ]    " + searchResult[k].resultRow.FR, k == idResultSelected ? "boxselected" : "box"))
                         idResultSelected = k;
                 }
                 GUILayout.EndScrollView();
             }
             else
-                GUILayout.Label("Not Found", GUILayout.Height(60));
+                GUILayout.Label("Not Found", "box", GUILayout.Height(60));
         }
 
 
         if (GUILayout.Button(new GUIContent("Add Sentence To Active", "Add to Sentence list of the active character below")))
         {
-            //_source.sentenceConfigs[i].speach.Add(new DialogueConfig.SentenceConfig.Sentence(GetSentenceFromCSV(idDialogue), DialogueConfig.SentenceConfig.ANIMATION.DEFAULT));
+            if (!isInCustomDialogue)
+            {
+                if (idSpeekerSelected != -1 && searchResult.Count > 0)
+                    _source.sentenceConfigs[idSpeekerSelected].speach.Add(new DialogueConfig.SentenceConfig.Sentence(searchResult[idResultSelected].resultRow, DialogueConfig.SentenceConfig.ANIMATION.DEFAULT, searchResult[idResultSelected].resultIdCsv));
+            }
+            else if (idSpeekerSelected != -1 && customDialogue.Length > 0)
+            {
+                _source.sentenceConfigs[idSpeekerSelected].speach.Add(new DialogueConfig.SentenceConfig.Sentence(new DialogueTable.Row(customDialogue), DialogueConfig.SentenceConfig.ANIMATION.DEFAULT, -1));
+            }
         }
 
         GUILayout.EndVertical();
@@ -176,19 +187,11 @@ public class DialogueConfigCustomEditor : Editor
         {
             GUILayout.Space(5);
 
-            string styleBox = "box";
-            if (idSpeekerSelected == i)
-                styleBox = "boxselected";
-
-            GUILayout.BeginVertical(styleBox);
+            GUILayout.BeginVertical(idSpeekerSelected == i ? "boxselected" : "box");
 
             GUILayout.BeginHorizontal();
 
-            string styleColapseBT = "detail";
-            if (_source.sentenceConfigs[i].isColapse)
-                styleColapseBT = "colapse";
-
-            if(GUILayout.Button(new GUIContent("", "Collapse/Show Details"), styleColapseBT, GUILayout.Width(20)))
+            if(GUILayout.Button(new GUIContent("", "Collapse/Show Details"), _source.sentenceConfigs[i].isColapse ? "colapse" : "detail", GUILayout.Width(20)))
             {
                 _source.sentenceConfigs[i] = new DialogueConfig.SentenceConfig(_source.sentenceConfigs[i].idSpeeker, _source.sentenceConfigs[i].autoPass, !_source.sentenceConfigs[i].isColapse, _source.sentenceConfigs[i].speach);
             }
@@ -254,56 +257,63 @@ public class DialogueConfigCustomEditor : Editor
 
                 for (int y = 0; y < _source.sentenceConfigs[i].speach.Count; y++)
                 {
-                    GUILayout.Space(5);
+                    GUILayout.BeginVertical(_source.sentenceConfigs[i].speach[y].csvIndex == -1 ? "customsentence" : "sentence");
                     GUILayout.BeginHorizontal();
 
-                    GUILayout.BeginVertical();
-                    // GUILayout.TextArea(_source.sentenceConfigs[i].speach[y].sentence, GUILayout.Height(60));
-                    GUILayout.EndVertical();
-
-                    GUILayout.BeginVertical();
-                    GUILayout.BeginHorizontal();
-
+                    GUILayout.Label(_source.sentenceConfigs[i].speach[y].sentence.FR.Length > 100 ? _source.sentenceConfigs[i].speach[y].sentence.FR.Substring(0,100) : _source.sentenceConfigs[i].speach[y].sentence.FR, "txt");
                     GUILayout.FlexibleSpace();
 
-                    if (GUILayout.Button(new GUIContent("U", "Move the sentence down"), GUILayout.Width(20f)))
+                    if (GUILayout.Button(new GUIContent("", "Move the sentence up"), "up", GUILayout.Width(20f)))
                     {
                         if (y != 0)
                         {
                             DialogueConfig.SentenceConfig.Sentence copy = _source.sentenceConfigs[i].speach[y];
                             _source.sentenceConfigs[i].speach.Remove(_source.sentenceConfigs[i].speach[y]);
                             _source.sentenceConfigs[i].speach.Insert(y - 1, copy);
+                            return;
                         }
                     }
-                    if (GUILayout.Button(new GUIContent("D", "Move the sentence up"), GUILayout.Width(20f)))
+                    if (GUILayout.Button(new GUIContent("", "Move the sentence down"), "down", GUILayout.Width(20f)))
                     {
                         if (y != _source.sentenceConfigs[i].speach.Count - 1)
                         {
                             DialogueConfig.SentenceConfig.Sentence copy = _source.sentenceConfigs[i].speach[y];
                             _source.sentenceConfigs[i].speach.Remove(_source.sentenceConfigs[i].speach[y]);
                             _source.sentenceConfigs[i].speach.Insert(y + 1, copy);
+                            return;
                         }
                     }
 
-                    if (GUILayout.Button(new GUIContent("X", "Delete the current sentence"), GUILayout.Width(20f)))
+                    if (GUILayout.Button(new GUIContent("", "Delete the current sentence"), "bin", GUILayout.Width(20f)))
+                    {
                         _source.sentenceConfigs[i].speach.Remove(_source.sentenceConfigs[i].speach[y]);
+                        return;
+                    }
 
                     GUILayout.EndHorizontal();
 
                     GUILayout.BeginHorizontal();
-                    GUILayout.Label("Text Anim", GUILayout.Width(100));
+
+                    GUILayout.Label("Text Anim", GUILayout.Width(70));
                     DialogueConfig.SentenceConfig.ANIMATION ToChange = (DialogueConfig.SentenceConfig.ANIMATION)EditorGUILayout.EnumPopup(_source.sentenceConfigs[i].speach[y].animEnter, GUILayout.Width(100f));
-                    _source.sentenceConfigs[i].speach[y] = new DialogueConfig.SentenceConfig.Sentence(_source.sentenceConfigs[i].speach[y].sentence, ToChange);
+
+                    GUILayout.FlexibleSpace();
+
+                    GUILayout.Label("Emotion", GUILayout.Width(70));
+                    EditorGUILayout.EnumPopup(_source.sentenceConfigs[i].speach[y].animEnter, GUILayout.Width(100f));
+
+                    _source.sentenceConfigs[i].speach[y] = new DialogueConfig.SentenceConfig.Sentence(_source.sentenceConfigs[i].speach[y].sentence, ToChange, _source.sentenceConfigs[i].speach[y].csvIndex);
                     GUILayout.EndHorizontal();
 
                     GUILayout.BeginHorizontal();
-                    GUILayout.Label("Emotion", GUILayout.Width(100));
-                    EditorGUILayout.EnumPopup(_source.sentenceConfigs[i].speach[y].animEnter, GUILayout.Width(100f));
+                    if(_source.sentenceConfigs[i].speach[y].csvIndex == -1)
+                        GUILayout.Label("* Custom, may not be complet !", "warning");
+                    GUILayout.FlexibleSpace();
+                    if (GUILayout.Button(new GUIContent("Modify", "Edit the current sentence. Will be pass in custome sentence."), GUILayout.Width(100)))
+                        ModifierWindow.ShowWindow();
                     GUILayout.EndHorizontal();
 
                     GUILayout.EndVertical();
-
-                    GUILayout.EndHorizontal();
                 }
 
                 GUILayout.EndVertical();
@@ -346,9 +356,9 @@ public class DialogueConfigCustomEditor : Editor
                 speekerName.Add(other.name);
     }
 
-    private bool SearchForSentence()
+    private void SearchForSentence()
     {
-        if (_source.csvFile.Count == 0) return false;
+        if (_source.csvFile.Count == 0) return;
         searchResult.Clear();
         idResultSelected = 0;
 
@@ -361,10 +371,6 @@ public class DialogueConfigCustomEditor : Editor
         }
         else
             LoadCSVFile(enumIdCsv - 1);
-
-        if (searchResult.Count > 0)
-            return true;
-        return false;
     }
 
     private void LoadCSVFile(int _idCSV)

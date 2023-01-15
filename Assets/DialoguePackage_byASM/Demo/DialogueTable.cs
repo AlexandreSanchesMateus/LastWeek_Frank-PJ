@@ -5,13 +5,23 @@ using System.Collections.Generic;
 
 public class DialogueTable
 {
-	public class Row
+	[System.Serializable]
+	public struct Row
 	{
 		public string ID;
 		public string FR;
 		public string EN;
 
+
+		public Row(string _first)
+		{
+			ID = "custom";
+			FR = _first;
+			EN = "";
+		}
 	}
+
+	
 
 	List<Row> rowList = new List<Row>();
 	bool isLoaded = false;
@@ -47,11 +57,15 @@ public class DialogueTable
 		return rowList.Count;
 	}
 
-	public Row GetAt(int i)
+	public bool GetAt(int i, out Row value)
 	{
-		if(rowList.Count <= i)
-			return null;
-		return rowList[i];
+		if (rowList.Count <= i)
+        {
+			value = new Row();
+			return false;
+        }
+		value = rowList[i];
+		return true;
 	}
 
 	public Row Find_ID(string find)
