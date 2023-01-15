@@ -717,38 +717,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speekerConfig: {fileID: 11400000, guid: 0c3547c2b2a5c4c4b966c3ee78508364, type: 2}
-  sentenceConfigs:
-  - idSpeeker: 1
-    autoPass: 0
-    speach:
-    - sentence: AZERTYUIOPQSDFGHJKLMWXCVBN
-      animEnter: 0
-  - idSpeeker: 0
-    autoPass: 0
-    speach:
-    - sentence: AZERTYUIOPQSDFGHJKLMWXCVBN
-      animEnter: 0
-    - sentence: AZERTYUIOPQSDFGHJKLMWXCVBN
-      animEnter: 0
-  - idSpeeker: 2
-    autoPass: 0
-    speach:
-    - sentence: AZERTYUIOPQSDFGHJKLMWXCVBN
-      animEnter: 0
-  - idSpeeker: 1
-    autoPass: 0
-    speach:
-    - sentence: AZERTYUIOPQSDFGHJKLMWXCVBN
-      animEnter: 0
-  - idSpeeker: 0
-    autoPass: 0
-    speach:
-    - sentence: AZERTYUIOPQSDFGHJKLMWXCVBN
-      animEnter: 0
-    - sentence: AZERTYUIOPQSDFGHJKLMWXCVBN
-      animEnter: 0
-    - sentence: AZERTYUIOPQSDFGHJKLMWXCVBN
-      animEnter: 0
+  csvFile:
+  - {fileID: 4900000, guid: 6521b6b1c9e28bb46847bb5f09292cca, type: 3}
+  delaiAutoPass: 4
+  sentenceConfigs: []
 --- !u!4 &848481279
 Transform:
   m_ObjectHideFlags: 0
@@ -757,7 +729,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 848481277}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 500.91214, y: 191.23892, z: -14.516277}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

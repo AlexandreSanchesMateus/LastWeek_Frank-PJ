@@ -22,3 +22,9 @@ MonoBehaviour:
   - name: PERS_3
     sprite: {fileID: 21300000, guid: 6fac4e39926fd9c4ca2ba4416160a857, type: 3}
     audioClip: {fileID: 0}
+  - name: PERS_4
+    sprite: {fileID: 21300000, guid: 6fac4e39926fd9c4ca2ba4416160a857, type: 3}
+    audioClip: {fileID: 0}
+  - name: PERS_5
+    sprite: {fileID: 21300000, guid: 6fac4e39926fd9c4ca2ba4416160a857, type: 3}
+    audioClip: {fileID: 0}

@@ -8,6 +8,8 @@ public class DialogueConfig : MonoBehaviour
     [System.Serializable]
     public struct SentenceConfig
     {
+        public bool isColapse;
+
         public int idSpeeker;
         public bool autoPass;
         public List<Sentence> speach;
@@ -17,12 +19,16 @@ public class DialogueConfig : MonoBehaviour
             idSpeeker = copy.idSpeeker;
             autoPass = copy.autoPass;
             speach = copy.speach;
+
+            isColapse = copy.isColapse;
         }
 
-        public SentenceConfig(int _id, bool _autoPass, List<Sentence> _speach)
+        public SentenceConfig(int _id, bool _autoPass, bool colapse, List<Sentence> _speach)
         {
             idSpeeker = _id;
             autoPass = _autoPass;
+            isColapse = colapse;
+
             if(_speach != null)
                 speach = new List<Sentence>(_speach);
             else
@@ -32,10 +38,10 @@ public class DialogueConfig : MonoBehaviour
         [System.Serializable]
         public struct Sentence
         {
-            public string sentence;
+            public DialogueTable.Row sentence;
             public ANIMATION animEnter;
 
-            public Sentence(string _sentence, ANIMATION _animation)
+            public Sentence(DialogueTable.Row _sentence, ANIMATION _animation)
             {
                 sentence = _sentence;
                 animEnter = _animation;
@@ -49,21 +55,18 @@ public class DialogueConfig : MonoBehaviour
             GRADUAL_ONSET,
             SHAKE
         }
+
+        public void SetColapse(bool value)
+        {
+            isColapse = value;
+        }
     }
 
-    public static int idLanguage { get; private set; }
-
     public SpeekerConfig speekerConfig;
-    public TextAsset csvFile;
-    public DialogueTable table;
+    public List<TextAsset> csvFile = new List<TextAsset>();
 
     public float delaiAutoPass;
     public List<SentenceConfig> sentenceConfigs = new List<SentenceConfig>();
-
-    public void SetLanguage(int value)
-    {
-        idLanguage = value;
-    }
 
     public void StartDialogue()
     {

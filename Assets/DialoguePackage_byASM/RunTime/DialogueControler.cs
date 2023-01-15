@@ -8,6 +8,9 @@ public class DialogueControler : MonoBehaviour
 {
     public static DialogueControler instance { get; private set; }
 
+    private static int gameLanguage;
+    public static int GetSetGameLanguage { get { return gameLanguage; } set { gameLanguage = value; } }
+
     public TextMeshProUGUI nameSpeeker;
     public TextMeshProUGUI txtSentence;
 
@@ -110,7 +113,7 @@ public class DialogueControler : MonoBehaviour
         // récupère les phrase présent dans l'array pour les mettre dans la queux
         foreach (DialogueConfig.SentenceConfig.Sentence other in _dialog.sentenceConfigs[speekerCount].speach)
         {
-            sentences.Enqueue(other.sentence);
+            //sentences.Enqueue(other.sentence);
         }
 
         DisplayNextSentence();
