@@ -5,34 +5,34 @@ using UnityEngine;
 [System.Serializable]
 public class DialogueConfig : MonoBehaviour
 {
-    [System.Serializable]
+    /*[System.Serializable]
     public struct SentenceConfig
     {
         public bool isColapse;
 
         public int idSpeeker;
         public bool autoPass;
-        public List<Sentence> speach;
+        public List<SentenceConfig> dialogueEvents;
 
         public SentenceConfig(SentenceConfig copy)
         {
             idSpeeker = copy.idSpeeker;
             autoPass = copy.autoPass;
-            speach = copy.speach;
+            dialogueEvents = copy.dialogueEvents;
 
             isColapse = copy.isColapse;
         }
 
-        public SentenceConfig(int _id, bool _autoPass, bool colapse, List<Sentence> _speach)
+        public SentenceConfig(int _id, bool _autoPass, bool colapse, List<DialogueEvent> _dialogues)
         {
             idSpeeker = _id;
             autoPass = _autoPass;
             isColapse = colapse;
 
-            if(_speach != null)
-                speach = new List<Sentence>(_speach);
+            if (_dialogues != null)
+                dialogueEvents = new List<DialogueEvent>(_dialogues);
             else
-                speach = new List<Sentence>();
+                dialogueEvents = new List<DialogueEvent>();
         }
 
         [System.Serializable]
@@ -51,22 +51,17 @@ public class DialogueConfig : MonoBehaviour
                 csvIndex = _csvIndex;
             }
         }
-
-        public void SetColapse(bool value)
-        {
-            isColapse = value;
-        }
-    }
+    }*/
 
     public SpeekerConfig speekerConfig;
     public List<TextAsset> csvFile = new List<TextAsset>();
 
     public float delaiAutoPass;
-    public List<SentenceConfig> sentenceConfigs = new List<SentenceConfig>();
+    public List<DialogueEvent> allDialogueEvents = new List<DialogueEvent>();
 
     public void StartDialogue()
     {
-        if(DialogueControler.instance)
-            DialogueControler.instance.StartDialogue(this, this.speekerConfig);
+        /*if(DialogueControler.instance)
+            DialogueControler.instance.StartDialogue(this, this.speekerConfig);*/
     }
 }

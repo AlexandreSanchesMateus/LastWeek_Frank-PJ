@@ -17,7 +17,7 @@ public class DialogueControler : MonoBehaviour
     public Image imgSpriteLeft;
     public Image imgSpriteRight;
 
-    private DialogueConfig _dialog;
+    /*private DialogueConfig _dialog;
     private SpeekerConfig _speekerConfig;
 
     private int speekerCount = -1;
@@ -27,7 +27,7 @@ public class DialogueControler : MonoBehaviour
 
     private Queue<string> sentences;
 
-    private AudioSource _audioSource;
+    private AudioSource _audioSource;*/
 
     [System.Serializable]
     public enum TEXT_ANIMATION
@@ -37,7 +37,7 @@ public class DialogueControler : MonoBehaviour
         SHAKE
     }
 
-
+    /*
     private void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
@@ -88,7 +88,7 @@ public class DialogueControler : MonoBehaviour
     {
         speekerCount++;
 
-        if(speekerCount >= _dialog.sentenceConfigs.Count)
+        if (speekerCount >= _dialog.sentenceConfigs.Count)
         {
             EndDialogue();
             return;
@@ -99,7 +99,7 @@ public class DialogueControler : MonoBehaviour
             // affiche le nom
             nameSpeeker.text = _speekerConfig.allSpeekers[_dialog.sentenceConfigs[speekerCount].idSpeeker].name;
 
-            if(_dialog.sentenceConfigs[speekerCount].idSpeeker == idFirstSpeeker)
+            if (_dialog.sentenceConfigs[speekerCount].idSpeeker == idFirstSpeeker)
             {
                 imgSpriteLeft.color = new Color(1, 1, 1);
                 imgSpriteRight.color = new Color(0.5f, 0.5f, 0.5f);
@@ -121,11 +121,11 @@ public class DialogueControler : MonoBehaviour
         // récupère les phrase présent dans l'array pour les mettre dans la queux
         foreach (DialogueConfig.SentenceConfig.Sentence other in _dialog.sentenceConfigs[speekerCount].speach)
         {
-            //sentences.Enqueue(other.sentence);
+            sentences.Enqueue(other.sentence);
         }
 
         DisplayNextSentence();
-    }
+    }*/
 
     private IEnumerator TypeSentence(string sentence)
     {
@@ -140,7 +140,7 @@ public class DialogueControler : MonoBehaviour
         }
     }
 
-    private void EndDialogue()
+    /*private void EndDialogue()
     {
         gameObject.SetActive(false);
         speekerCount = -1;
@@ -149,10 +149,10 @@ public class DialogueControler : MonoBehaviour
         _dialog = null;
         _speekerConfig = null;
 
-       /* animBordureBas.SetBool("isOpen", false);
+        animBordureBas.SetBool("isOpen", false);
         animBordureHaut.SetBool("isOpen", false);
         player.enabled = true;
         mouse.enabled = true;
-        weapen.enabled = true;*/
-    }
+        weapen.enabled = true;
+    }*/
 }
