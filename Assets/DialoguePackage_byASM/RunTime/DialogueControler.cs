@@ -29,6 +29,14 @@ public class DialogueControler : MonoBehaviour
 
     private AudioSource _audioSource;
 
+    [System.Serializable]
+    public enum TEXT_ANIMATION
+    {
+        DEFAULT,
+        GRADUAL_ONSET,
+        SHAKE
+    }
+
 
     private void Awake()
     {

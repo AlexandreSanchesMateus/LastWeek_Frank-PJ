@@ -40,22 +40,16 @@ public class DialogueConfig : MonoBehaviour
         {
             public DialogueTable.Row sentence;
             public int csvIndex;
-            public ANIMATION animEnter;
+            public DialogueControler.TEXT_ANIMATION animEnter;
+            public Speeker.EMOTION emotion;
 
-            public Sentence(DialogueTable.Row _sentence, ANIMATION _animation, int _csvIndex)
+            public Sentence(DialogueTable.Row _sentence, DialogueControler.TEXT_ANIMATION _animation, Speeker.EMOTION _emotion, int _csvIndex)
             {
                 sentence = _sentence;
                 animEnter = _animation;
+                emotion = _emotion;
                 csvIndex = _csvIndex;
             }
-        }
-
-        [System.Serializable]
-        public enum ANIMATION
-        {
-            DEFAULT,
-            GRADUAL_ONSET,
-            SHAKE
         }
 
         public void SetColapse(bool value)

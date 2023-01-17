@@ -5,7 +5,26 @@ using UnityEngine;
 [System.Serializable]
 public class Speeker
 {
+    [System.Serializable]
+    public struct SpeekerStatu
+    {
+        public EMOTION emotion;
+        public Animation animation;
+    }
+
+    [System.Serializable]
+    public enum EMOTION
+    {
+        NEUTRAL,
+        FEAR,
+        SAD,
+        CONFUSED,
+        FURIOUS,
+    }
+
     public string name;
     public Sprite sprite;
-    public AudioClip audioClip;
+    public List<AudioClip> audioClip = new List<AudioClip>();
+
+    public List<SpeekerStatu> status = new List<SpeekerStatu>();
 }

@@ -165,11 +165,11 @@ public class DialogueConfigCustomEditor : Editor
             if (!isInCustomDialogue)
             {
                 if (idSpeekerSelected != -1 && searchResult.Count > 0)
-                    _source.sentenceConfigs[idSpeekerSelected].speach.Add(new DialogueConfig.SentenceConfig.Sentence(searchResult[idResultSelected].resultRow, DialogueConfig.SentenceConfig.ANIMATION.DEFAULT, searchResult[idResultSelected].resultIdCsv));
+                    _source.sentenceConfigs[idSpeekerSelected].speach.Add(new DialogueConfig.SentenceConfig.Sentence(searchResult[idResultSelected].resultRow, DialogueControler.TEXT_ANIMATION.DEFAULT, Speeker.EMOTION.NEUTRAL, searchResult[idResultSelected].resultIdCsv));
             }
             else if (idSpeekerSelected != -1 && customDialogue.Length > 0)
             {
-                _source.sentenceConfigs[idSpeekerSelected].speach.Add(new DialogueConfig.SentenceConfig.Sentence(new DialogueTable.Row(customDialogue), DialogueConfig.SentenceConfig.ANIMATION.DEFAULT, -1));
+                _source.sentenceConfigs[idSpeekerSelected].speach.Add(new DialogueConfig.SentenceConfig.Sentence(new DialogueTable.Row(customDialogue), DialogueControler.TEXT_ANIMATION.DEFAULT, Speeker.EMOTION.NEUTRAL, -1));
             }
         }
 
@@ -260,7 +260,7 @@ public class DialogueConfigCustomEditor : Editor
                     GUILayout.BeginVertical(_source.sentenceConfigs[i].speach[y].csvIndex == -1 ? "customsentence" : "sentence");
                     GUILayout.BeginHorizontal();
 
-                    GUILayout.Label(_source.sentenceConfigs[i].speach[y].sentence.FR.Length > 100 ? _source.sentenceConfigs[i].speach[y].sentence.FR.Substring(0,100) : _source.sentenceConfigs[i].speach[y].sentence.FR, "txt");
+                    GUILayout.Label(_source.sentenceConfigs[i].speach[y].sentence.FR.Length > 100 ? _source.sentenceConfigs[i].speach[y].sentence.FR.Substring(0,100) + " [...]" : _source.sentenceConfigs[i].speach[y].sentence.FR, "txt");
                     GUILayout.FlexibleSpace();
 
                     if (GUILayout.Button(new GUIContent("", "Move the sentence up"), "up", GUILayout.Width(20f)))
@@ -293,17 +293,16 @@ public class DialogueConfigCustomEditor : Editor
                     GUILayout.EndHorizontal();
 
                     GUILayout.BeginHorizontal();
-
                     GUILayout.Label("Text Anim", GUILayout.Width(70));
-                    DialogueConfig.SentenceConfig.ANIMATION ToChange = (DialogueConfig.SentenceConfig.ANIMATION)EditorGUILayout.EnumPopup(_source.sentenceConfigs[i].speach[y].animEnter, GUILayout.Width(100f));
+                    DialogueControler.TEXT_ANIMATION txtAnim = (DialogueControler.TEXT_ANIMATION)EditorGUILayout.EnumPopup(_source.sentenceConfigs[i].speach[y].animEnter, GUILayout.Width(100f));
 
                     GUILayout.FlexibleSpace();
 
                     GUILayout.Label("Emotion", GUILayout.Width(70));
-                    EditorGUILayout.EnumPopup(_source.sentenceConfigs[i].speach[y].animEnter, GUILayout.Width(100f));
-
-                    _source.sentenceConfigs[i].speach[y] = new DialogueConfig.SentenceConfig.Sentence(_source.sentenceConfigs[i].speach[y].sentence, ToChange, _source.sentenceConfigs[i].speach[y].csvIndex);
+                    Speeker.EMOTION speekerEmotion = (Speeker.EMOTION)EditorGUILayout.EnumPopup(_source.sentenceConfigs[i].speach[y].emotion, GUILayout.Width(100f));
                     GUILayout.EndHorizontal();
+
+                    _source.sentenceConfigs[i].speach[y] = new DialogueConfig.SentenceConfig.Sentence(_source.sentenceConfigs[i].speach[y].sentence, txtAnim, speekerEmotion, _source.sentenceConfigs[i].speach[y].csvIndex);
 
                     GUILayout.BeginHorizontal();
                     if(_source.sentenceConfigs[i].speach[y].csvIndex == -1)
