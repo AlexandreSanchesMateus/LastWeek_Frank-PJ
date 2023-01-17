@@ -720,7 +720,7 @@ MonoBehaviour:
   csvFile:
   - {fileID: 4900000, guid: 6521b6b1c9e28bb46847bb5f09292cca, type: 3}
   delaiAutoPass: 4
-  sentenceConfigs: []
+  allDialogueEvents: []
 --- !u!4 &848481279
 Transform:
   m_ObjectHideFlags: 0

@@ -22,5 +22,5 @@ public class SentenceConfig : DialogueEvent
         }
     }
 
-    public List<Sentence> talking;
+    public List<Sentence> talking = new List<Sentence>();
 }

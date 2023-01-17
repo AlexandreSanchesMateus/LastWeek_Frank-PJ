@@ -351,7 +351,7 @@ public class DialogueConfigCustomEditor : Editor
         
         GUILayout.Space(5);
 
-        if (GUILayout.Button(new GUIContent("Add Event", "")) && idSpeekerSelected != -1)
+        if (GUILayout.Button(new GUIContent("Add Event", "Add a new event")))
             _source.allDialogueEvents.Add(new EventConfig());
         GUILayout.Space(40);
     }
