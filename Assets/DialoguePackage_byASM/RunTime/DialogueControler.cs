@@ -17,17 +17,18 @@ public class DialogueControler : MonoBehaviour
     public Image imgSpriteLeft;
     public Image imgSpriteRight;
 
-    /*private DialogueConfig _dialog;
+    private DialogueConfig _dialog;
     private SpeekerConfig _speekerConfig;
 
-    private int speekerCount = -1;
+    private int eventCount = -1;
+    //private int speekerCount = -1;
 
-    private int idFirstSpeeker = 0;
-    private int idLastSpeeker = -1;
+    /*private int idFirstSpeeker = 0;
+    private int idLastSpeeker = -1;*/
 
-    private Queue<string> sentences;
+    private Queue<string> sentences = new Queue<string>();
 
-    private AudioSource _audioSource;*/
+    private AudioSource _audioSource;
 
     [System.Serializable]
     public enum TEXT_ANIMATION
@@ -37,19 +38,96 @@ public class DialogueControler : MonoBehaviour
         SHAKE
     }
 
-    /*
+    
     private void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
         instance = this;
     }
 
-    void Start()
+    public void StartDialogue(DialogueConfig dialogue, SpeekerConfig speekers)
     {
-        sentences = new Queue<string>();
-        gameObject.SetActive(false);
+        if (dialogue.allDialogueEvents.Count == 0) return;
+
+        _dialog = dialogue;
+        _speekerConfig = speekers;
+
+        // initialisation
+        NextDialogueEvent();
     }
 
+    private void NextDialogueEvent()
+    {
+        eventCount++;
+
+        if (eventCount >= _dialog.allDialogueEvents.Count)
+        {
+            DialogueEnd();
+            return;
+        }
+
+        switch (_dialog.allDialogueEvents[eventCount].source)
+        {
+            case DialogueEvent.TYPE_EVENT.SENTENCE:
+
+                nameSpeeker.text = _speekerConfig.allSpeekers[_dialog.allDialogueEvents[eventCount].idSpeeker].name;
+                sentences.Clear();
+
+                foreach (SentenceConfig.Sentence other in _dialog.allDialogueEvents[eventCount].sentenceConfig.talking)
+                {
+                    // -------------------------------------------------------- TO DO -------------------------------------------------------- //
+                    // Prendre la bonne traduction
+
+                    sentences.Enqueue(other.sentence.FR);
+                }
+
+                DisplayNextSentence();
+                break;
+
+            case DialogueEvent.TYPE_EVENT.EVENT:
+
+                switch (_dialog.allDialogueEvents[eventCount].eventConfig.actionType)
+                {
+                    case EventConfig.ACTION_TYPE.SPEAKER_IN:
+                        Debug.Log("SPEEKER IN");
+                        break;
+
+                    case EventConfig.ACTION_TYPE.SPEAKER_OUT:
+                        Debug.Log("SPEEKER OUT");
+                        break;
+                }
+                break;
+
+            case DialogueEvent.TYPE_EVENT.CHOICE:
+                break;
+        }
+    }
+
+    private void DialogueEnd()
+    {
+
+    }
+    
+    public void DisplayNextSentence()
+    {
+        // si il n'y a plus de phrase à afficher
+        if (sentences.Count == 0)
+        {
+            NextDialogueEvent();
+            return;
+        }
+
+        // passe à la phrase suivante
+        string sentence = sentences.Dequeue();
+
+        // si le jr appuis sur continuer quand la 1er animation ce joue, cette dernière sera stopé
+        StopAllCoroutines();
+
+        // affiche les phrase
+        StartCoroutine(TypeSentence(sentence));
+    }
+
+    /*
     public void StartDialogue(DialogueConfig dialogue, SpeekerConfig speekers)
     {
         if (dialogue.sentenceConfigs.Count == 0) return;
@@ -65,24 +143,7 @@ public class DialogueControler : MonoBehaviour
         NextSpeeker();
     }
 
-    public void DisplayNextSentence()
-    {
-        // si il n'y a plus de phrase à afficher
-        if (sentences.Count == 0)
-        {
-            NextSpeeker();
-            return;
-        }
-
-        // passe à la phrase suivante
-        string sentence = sentences.Dequeue();
-
-        // si le jr appuis sur continuer quand la 1er animation ce joue, cette dernière sera stopé
-        StopAllCoroutines();
-
-        // affiche les phrase
-        StartCoroutine(TypeSentence(sentence));
-    }
+    
 
     private void NextSpeeker()
     {

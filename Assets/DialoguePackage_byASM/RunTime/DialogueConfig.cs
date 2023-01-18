@@ -56,12 +56,17 @@ public class DialogueConfig : MonoBehaviour
     public SpeekerConfig speekerConfig;
     public List<TextAsset> csvFile = new List<TextAsset>();
 
+    [field: SerializeField] public List<DialogueEvent> allDialogueEvents = new List<DialogueEvent>();
+
     public float delaiAutoPass;
-    public List<DialogueEvent> allDialogueEvents = new List<DialogueEvent>();
 
     public void StartDialogue()
     {
-        /*if(DialogueControler.instance)
-            DialogueControler.instance.StartDialogue(this, this.speekerConfig);*/
+        Debug.Log("INIT");
+        if (DialogueControler.instance)
+        {
+            Debug.Log("INSTANCE");
+            DialogueControler.instance.StartDialogue(this, this.speekerConfig);
+        }
     }
 }

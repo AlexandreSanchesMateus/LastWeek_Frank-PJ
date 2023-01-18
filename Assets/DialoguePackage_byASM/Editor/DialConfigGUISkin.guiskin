@@ -2080,9 +2080,9 @@ MonoBehaviour:
     m_FixedHeight: 0
     m_StretchWidth: 1
     m_StretchHeight: 0
-  - m_Name: occurence
+  - m_Name: action
     m_Normal:
-      m_Background: {fileID: 2800000, guid: ea0a105188c307b429e551ddd2051326, type: 3}
+      m_Background: {fileID: 2800000, guid: f8cd2ca469492784f907f5cb1be45a7c, type: 3}
       m_ScaledBackgrounds: []
       m_TextColor: {r: 0.9, g: 0.9, b: 0.9, a: 1}
     m_Hover:

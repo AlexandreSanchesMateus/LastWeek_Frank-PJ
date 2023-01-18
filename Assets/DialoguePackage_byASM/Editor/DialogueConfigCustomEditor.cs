@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System.Linq;
 
 [CustomEditor(typeof(DialogueConfig))]
 [CanEditMultipleObjects]
@@ -121,10 +122,10 @@ public class DialogueConfigCustomEditor : Editor
         IDInput = EditorGUILayout.TextField(IDInput, GUILayout.Width(100));
         enumIdCsv = EditorGUILayout.Popup(enumIdCsv, csvName.ToArray(), GUILayout.Width(100));
 
-        if (GUILayout.Button(new GUIContent("Avanced", "Look for a specific key"), GUILayout.Width(70f)))
+        /*if (GUILayout.Button(new GUIContent("Avanced", "Look for a specific key"), GUILayout.Width(70f)))
         {
             // Ouverture Box
-        }
+        }*/
 
         GUILayout.EndHorizontal();
 
@@ -159,16 +160,16 @@ public class DialogueConfigCustomEditor : Editor
                 GUILayout.Label("Not Found", "box", GUILayout.Height(60));
         }
 
-        if (GUILayout.Button(new GUIContent("Add Sentence To Active", "Add to Sentence list of the active character below")) && _source.allDialogueEvents[idSpeekerSelected] is SentenceConfig SentenceSelected)
+        if (GUILayout.Button(new GUIContent("Add Sentence To Active", "Add to Sentence list of the active character below")) && _source.allDialogueEvents[idSpeekerSelected].source == DialogueEvent.TYPE_EVENT.SENTENCE)
         {
             if (!isInCustomDialogue)
             {
                 if (idSpeekerSelected != -1 && searchResult.Count > 0)
-                    SentenceSelected.talking.Add(new SentenceConfig.Sentence(searchResult[idResultSelected].resultRow, DialogueControler.TEXT_ANIMATION.DEFAULT, Speeker.EMOTION.NEUTRAL, searchResult[idResultSelected].resultIdCsv));
+                    _source.allDialogueEvents[idSpeekerSelected].sentenceConfig.talking.Add(new SentenceConfig.Sentence(searchResult[idResultSelected].resultRow, DialogueControler.TEXT_ANIMATION.DEFAULT, Speeker.EMOTION.NEUTRAL, searchResult[idResultSelected].resultIdCsv));
             }
             else if (idSpeekerSelected != -1 && customDialogue.Length > 0)
             {
-                SentenceSelected.talking.Add(new SentenceConfig.Sentence(new DialogueTable.Row(customDialogue), DialogueControler.TEXT_ANIMATION.DEFAULT, Speeker.EMOTION.NEUTRAL, -1));
+                _source.allDialogueEvents[idSpeekerSelected].sentenceConfig.talking.Add(new SentenceConfig.Sentence(new DialogueTable.Row(customDialogue), DialogueControler.TEXT_ANIMATION.DEFAULT, Speeker.EMOTION.NEUTRAL, -1));
             }
         }
 
@@ -185,20 +186,29 @@ public class DialogueConfigCustomEditor : Editor
         int currentIndex = 0;
         foreach (DialogueEvent currentDialogueEvent in _source.allDialogueEvents)
         {
+
+            if (currentDialogueEvent == null)
+                continue;
+
             GUILayout.Space(5);
 
-            GUILayout.BeginVertical(idSpeekerSelected == currentIndex ? "boxselected" : "box");
+            string style = "box";
+            if (currentDialogueEvent.source == DialogueEvent.TYPE_EVENT.SENTENCE && idSpeekerSelected == currentIndex)
+                style = "boxselected";
+            else if (currentDialogueEvent.source == DialogueEvent.TYPE_EVENT.EVENT)
+                style = "action";
+
+
+            GUILayout.BeginVertical(style);
 
             GUILayout.BeginHorizontal();
 
             if(GUILayout.Button(new GUIContent("", "Collapse/Show Details"), currentDialogueEvent.isColapse ? "colapse" : "detail", GUILayout.Width(20)))
             {
                 currentDialogueEvent.isColapse = !currentDialogueEvent.isColapse;
-                //_source.allDialogueEvents[i] = new DialogueConfig.SentenceConfig(_source.sentenceConfigs[i].idSpeeker, _source.sentenceConfigs[i].autoPass, !_source.sentenceConfigs[i].isColapse, _source.sentenceConfigs[i].dialogueEvents);
             }
 
             GUILayout.Space(10);
-            //int speeker = EditorGUILayout.Popup(_source.sentenceConfigs[i].idSpeeker, speekerName.ToArray(), GUILayout.Width(150));
             currentDialogueEvent.idSpeeker = EditorGUILayout.Popup(currentDialogueEvent.idSpeeker, speekerName.ToArray(), GUILayout.Width(150));
             GUILayout.FlexibleSpace();
 
@@ -237,7 +247,7 @@ public class DialogueConfigCustomEditor : Editor
                 _source.allDialogueEvents.Remove(currentDialogueEvent);
 
                 if (idSpeekerSelected == currentIndex)
-                    idSpeekerSelected--;
+                    idSpeekerSelected = -1;
                 return;
             }
 
@@ -249,8 +259,10 @@ public class DialogueConfigCustomEditor : Editor
                 currentDialogueEvent.autoPass = GUILayout.Toggle(currentDialogueEvent.autoPass, "Auto-Pass");
 
                 #region SENTENCE
-                if (currentDialogueEvent is SentenceConfig currentSentenceConfig)
+                if (currentDialogueEvent.source == DialogueEvent.TYPE_EVENT.SENTENCE)
                 {
+                    SentenceConfig currentSentenceConfig = currentDialogueEvent.sentenceConfig;
+
                     if (currentIndex != idSpeekerSelected)
                         if (GUILayout.Button(new GUIContent("Active", "Select this speeker to recive sentences"), "buttoncenter")) idSpeekerSelected = currentIndex;
 
@@ -313,7 +325,7 @@ public class DialogueConfigCustomEditor : Editor
 
                         currentSentenceConfig.talking[y] = new SentenceConfig.Sentence(currentSentenceConfig.talking[y].sentence, txtAnimation, spEmotion, currentSentenceConfig.talking[y].csvIndex);
 
-                        // _source.sentenceConfigs[i].speach[y] = new DialogueConfig.SentenceConfig.Sentence(_source.sentenceConfigs[i].speach[y].sentence, txtAnim, speekerEmotion, _source.sentenceConfigs[i].speach[y].csvIndex);
+                        //_source.sentenceConfigs[i].speach[y] = new DialogueConfig.SentenceConfig.Sentence(_source.sentenceConfigs[i].speach[y].sentence, txtAnim, speekerEmotion, _source.sentenceConfigs[i].speach[y].csvIndex);
 
                         GUILayout.BeginHorizontal();
                         if (currentSentenceConfig.talking[y].csvIndex == -1)
@@ -330,9 +342,10 @@ public class DialogueConfigCustomEditor : Editor
                 }
                 #endregion
                 #region EVENT
-                else if (currentDialogueEvent is EventConfig currentEventConfig)
+                else if (currentDialogueEvent.source == DialogueEvent.TYPE_EVENT.EVENT)
                 {
-
+                    currentDialogueEvent.eventConfig.actionType = (EventConfig.ACTION_TYPE)EditorGUILayout.EnumPopup(currentDialogueEvent.eventConfig.actionType);
+                    currentDialogueEvent.eventConfig.screenPos = (EventConfig.POSITION)EditorGUILayout.EnumPopup(currentDialogueEvent.eventConfig.screenPos);
                 }
                 #endregion
             }
@@ -347,12 +360,13 @@ public class DialogueConfigCustomEditor : Editor
 
         GUILayout.Space(20);
         if (GUILayout.Button(new GUIContent("Add speeker", "Add a new speeker")))
-            _source.allDialogueEvents.Add(new SentenceConfig());
+            _source.allDialogueEvents.Add(new DialogueEvent(new SentenceConfig()));
         
         GUILayout.Space(5);
 
         if (GUILayout.Button(new GUIContent("Add Event", "Add a new event")))
-            _source.allDialogueEvents.Add(new EventConfig());
+            _source.allDialogueEvents.Add(new DialogueEvent(new EventConfig()));
+        
         GUILayout.Space(40);
     }
 

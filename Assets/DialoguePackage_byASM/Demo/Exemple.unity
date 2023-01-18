@@ -719,8 +719,9 @@ MonoBehaviour:
   speekerConfig: {fileID: 11400000, guid: 0c3547c2b2a5c4c4b966c3ee78508364, type: 2}
   csvFile:
   - {fileID: 4900000, guid: 6521b6b1c9e28bb46847bb5f09292cca, type: 3}
-  delaiAutoPass: 4
+  - {fileID: 4900000, guid: 4abbebc3bf6a77c4f9abc1b5155960bc, type: 3}
   allDialogueEvents: []
+  delaiAutoPass: 4
 --- !u!4 &848481279
 Transform:
   m_ObjectHideFlags: 0

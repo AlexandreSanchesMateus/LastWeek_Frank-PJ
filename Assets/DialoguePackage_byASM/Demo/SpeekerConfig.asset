@@ -37,3 +37,7 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 6fac4e39926fd9c4ca2ba4416160a857, type: 3}
     audioClip: []
     status: []
+  - name: UNKNOWN
+    sprite: {fileID: 21300000, guid: f2901efd8bb16bc408ad37f017fbf9bc, type: 3}
+    audioClip: []
+    status: []

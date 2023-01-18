@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class SentenceConfig : DialogueEvent
+public class SentenceConfig
 {
     [System.Serializable]
     public struct Sentence
