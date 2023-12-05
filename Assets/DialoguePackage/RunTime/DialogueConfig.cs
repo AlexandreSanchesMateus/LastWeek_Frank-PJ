@@ -56,7 +56,7 @@ public class DialogueConfig : MonoBehaviour
     public SpeekerConfig speekerConfig;
     public List<TextAsset> csvFile = new List<TextAsset>();
 
-    [field: SerializeField] public List<DialogueEvent> allDialogueEvents = new List<DialogueEvent>();
+    public List<DialogueEvent> allDialogueEvents;
 
     public float delaiAutoPass;
 
